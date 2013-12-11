@@ -103,7 +103,7 @@
             element: currentElement,
             intro: currentElement.getAttribute('data-intro'),
             step: parseInt(currentElement.getAttribute('data-step'), 10),
-	    tooltipClass: currentElement.getAttribute('data-tooltipClass'),
+            tooltipClass: currentElement.getAttribute('data-tooltipClass'),
             position: currentElement.getAttribute('data-position') || this._options.tooltipPosition
           };
         }
@@ -116,7 +116,7 @@
         var currentElement = allIntroSteps[i];
 
         if (currentElement.getAttribute('data-step') == null) {
-          
+
           while (true) {
             if (typeof introItems[nextStep] == 'undefined') {
               break;
@@ -129,7 +129,7 @@
             element: currentElement,
             intro: currentElement.getAttribute('data-intro'),
             step: nextStep + 1,
-	    tooltipClass: currentElement.getAttribute('data-tooltipClass'),
+            tooltipClass: currentElement.getAttribute('data-tooltipClass'),
             position: currentElement.getAttribute('data-position') || this._options.tooltipPosition
           };
         }
@@ -141,7 +141,7 @@
     for (var z = 0; z < introItems.length; z++) {
       introItems[z] && tempIntroItems.push(introItems[z]);  // copy non-empty values to the end of the array
     }
-    
+
     introItems = tempIntroItems;
 
     //Ok, sort all items with given steps
@@ -418,7 +418,7 @@
           skipTooltipButton    = oldHelperLayer.querySelector('.introjs-skipbutton'),
           prevTooltipButton    = oldHelperLayer.querySelector('.introjs-prevbutton'),
           nextTooltipButton    = oldHelperLayer.querySelector('.introjs-nextbutton');
-          
+
       //hide the tooltip
       oldtooltipContainer.style.opacity = 0;
 
@@ -449,7 +449,7 @@
         oldtooltipLayer.innerHTML = targetElement.intro;
         //set the tooltip position
         _placeTooltip.call(self, targetElement.element, oldtooltipContainer, oldArrowLayer);
-        
+
         //change active bullet
         oldHelperLayer.querySelector('.introjs-bullets li > a.active').className = '';
         oldHelperLayer.querySelector('.introjs-bullets li > a[data-stepnumber="' + targetElement.step + '"]').className = 'active';
@@ -478,7 +478,7 @@
 
       tooltipTextLayer.className = 'introjs-tooltiptext';
       tooltipTextLayer.innerHTML = targetElement.intro;
-      
+
       bulletsLayer.className = 'introjs-bullets';
 
       if (this._options.showBullets === false) {
@@ -611,7 +611,7 @@
 
     var parentElm = targetElement.element.parentNode;
     while (parentElm != null) {
-      if (parentElm.tagName.toLowerCase() === 'body') break;
+      if (parentElm.tagName.toLowerCase() === 'body' || parentElm.tagName.toLowerCase() === 'html') break;
 
       var zIndex = _getPropValue(parentElm, 'z-index');
       if (/[0-9]+/.test(zIndex)) {
@@ -620,7 +620,10 @@
       parentElm = parentElm.parentNode;
     }
 
-    if (!_elementInViewport(targetElement.element)) {
+    if (targetElement.element.tagName.toLowerCase() === 'body') {
+      window.scrollTo(0, 0) // scroll to top when highlighting the whole page
+
+    } else if (!_elementInViewport(targetElement.element)) {
       var rect = targetElement.element.getBoundingClientRect(),
         winHeight=_getWinSize().height,
         top = rect.bottom - (rect.bottom - rect.top),
