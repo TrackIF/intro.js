@@ -1,5 +1,5 @@
 /**
- * Intro.js v0.6.0
+ * tif-intro.js v0.6.1
  * https://github.com/usablica/intro.js
  * MIT licensed
  *
