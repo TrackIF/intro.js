@@ -611,7 +611,7 @@
 
     var parentElm = targetElement.element.parentNode;
     while (parentElm != null) {
-      if (parentElm.tagName.toLowerCase() === 'body') break;
+      if (parentElm.tagName.toLowerCase() === 'body' || parentElm.tagName.toLowerCase() === 'html') break;
 
       var zIndex = _getPropValue(parentElm, 'z-index');
       if (/[0-9]+/.test(zIndex)) {
@@ -620,7 +620,10 @@
       parentElm = parentElm.parentNode;
     }
 
-    if (!_elementInViewport(targetElement.element)) {
+    if (targetElement.element.tagName.toLowerCase() === 'body') {
+      window.scrollTo(0, 0) // scroll to top when highlighting the whole page
+
+    } else if (!_elementInViewport(targetElement.element)) {
       var rect = targetElement.element.getBoundingClientRect(),
         winHeight=_getWinSize().height,
         top = rect.bottom - (rect.bottom - rect.top),
